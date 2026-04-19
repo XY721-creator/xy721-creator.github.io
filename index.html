@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片颜色聚类可视化 | K-Means | RGB/LAB | AI色彩和谐度</title>
+    <!-- ECharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <!-- 颜色处理库 -->
+    <script src="https://cdn.jsdelivr.net/npm/colorjs.io@0.4.5/dist/color.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 图片颜色聚类可视化</h1>
+        <p class="subtitle">K-Means 聚类 | 支持 RGB/LAB 颜色空间 | 可切换图表 | AI 色彩和谐度分析</p>
+
+        <div class="main-content">
+            <!-- 左侧：控制面板 -->
+            <div class="control-panel">
+                <div class="control-group">
+                    <label>📁 选择图片</label>
+                    <input type="file" id="imageUpload" accept="image/*">
+                    <div class="sample-images">
+                        <p style="margin: 10px 0 5px 0; font-size: 12px; color: #aaa;">或选择示例图片：</p>
+                        <div class="sample-buttons">
+                            <button class="sample-btn" data-img="landscape">🏔️ 风景</button>
+                            <button class="sample-btn" data-img="portrait">👤 人像</button>
+                            <button class="sample-btn" data-img="abstract">🎨 抽象</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>🎯 聚类数量 K = <span id="kValueDisplay">5</span></label>
+                    <input type="range" id="kSlider" min="2" max="10" step="1" value="5">
+                    <div class="slider-labels">
+                        <span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>🌈 颜色空间</label>
+                    <select id="colorSpaceSelect">
+                        <option value="rgb">RGB (红绿蓝)</option>
+                        <option value="lab">LAB (感知均匀空间)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>📊 图表类型</label>
+                    <select id="chartTypeSelect">
+                        <option value="bar">📊 柱状图</option>
+                        <option value="pie">🥧 饼图</option>
+                    </select>
+                </div>
+
+                <button id="analyzeBtn" class="primary-btn">🚀 开始聚类分析</button>
+
+                <!-- AI 颜色和谐度 -->
+                <div class="harmony-section">
+                    <h3>🤖 AI 色彩和谐度分析</h3>
+                    <div class="harmony-status" id="harmonyStatus">
+                        <span class="status-icon">⏳</span>
+                        <span id="harmonyText">点击分析按钮，AI将判断颜色搭配是否和谐</span>
+                    </div>
+                    <div class="harmony-detail" id="harmonyDetail" style="display: none;"></div>
+                </div>
+
+                <!-- 使用说明 -->
+                <div class="info-note">
+                    <p>💡 <strong>使用说明：</strong></p>
+                    <p>1. 上传图片或点击示例图片<br>
+                    2. 调整 K 值改变聚类数量<br>
+                    3. 切换 RGB/LAB 颜色空间体验不同效果<br>
+                    4. 点击分析按钮查看结果<br>
+                    5. 可切换柱状图/饼图展示</p>
+                </div>
+            </div>
+
+            <!-- 右侧：图片预览和结果展示 -->
+            <div class="result-area">
+                <!-- 图片预览 -->
+                <div class="image-preview">
+                    <h3>📷 图片预览</h3>
+                    <div class="image-container" id="imageContainer">
+                        <img id="previewImg" src="" alt="预览图片" style="display: none;">
+                        <div class="placeholder" id="imagePlaceholder">
+                            <span>⬆️ 请上传图片或选择示例</span>
+                        </div>
+                    </div>
+                    <div class="image-info" id="imageInfo"></div>
+                </div>
+
+                <!-- 聚类结果可视化 -->
+                <div class="chart-container">
+                    <h3>📊 聚类结果 <span id="chartTypeLabel">(柱状图)</span></h3>
+                    <div id="mainChart" style="width: 100%; height: 350px;"></div>
+                </div>
+
+                <!-- 聚类颜色展示 -->
+                <div class="colors-container">
+                    <h3>🎨 聚类中心颜色</h3>
+                    <div class="cluster-colors" id="clusterColors"></div>
+                    <div class="cluster-stats" id="clusterStats"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
